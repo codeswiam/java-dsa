@@ -71,6 +71,45 @@ public class SinglyLinkedList<T> {
     }
 
     /**
+     * Adds the element to the specified index.
+     *
+     * Must be O(1) for indices 0 and size and O(n) for all other cases.
+     *
+     * ASSUMPTIONS:
+     * - You may assume that the index will always be valid [0, size]
+     * - You may assume that the data will not be null
+     *
+     * @param index the index to add the new element
+     * @param data  the data to add
+     */
+    public void addAtIndex(int index, T data) {
+        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+
+        if (index == 0) {
+            addToFront(data);
+        } else if (index == size) {
+            addToBack(data);
+        } else {
+            // access the element at index-1
+            SinglyLinkedListNode<T> previousNode = head;
+            int i = 1;
+            while (i < index) {
+                previousNode = previousNode.getNext();
+                i++;
+            }
+
+            // assign its next to the new element's next
+            SinglyLinkedListNode<T> newNode = new SinglyLinkedListNode<>(data, previousNode.getNext());
+
+            // make it point to the new element
+            previousNode.setNext(newNode);
+
+            // increase size
+            size++;
+        }
+    }
+
+    /**
      * Removes and returns the first data of the list.
      * <p>
      * Method should run in O(1) time.
