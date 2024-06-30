@@ -131,6 +131,42 @@ public class ExternalChainingHashMap<K, V> {
     }
 
     /**
+     * Returns whether  the key is in the map.
+     *
+     * @param key The key to search for in the map. You may assume that the
+     *            key is never null.
+     * @return true if the key is contained within the map, false otherwise.
+     */
+    public boolean containsKey(K key) {
+        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+        int index = getIndex(key);
+        ExternalChainingMapEntry<K, V> current = table[index];
+
+        // the rest can be replaced with return containsKey(key, current)
+        while (current != null) {
+            if (current.getKey().equals(key)) {
+                return true;
+            }
+            current = current.getNext();
+        }
+        return false;
+    }
+
+    /**
+     * Recursive version of containsKey()
+     * @param current The head of the chain at the index corresponding to key
+     * */
+        private boolean containsKey(K key, ExternalChainingMapEntry<K, V> current) {
+        if (current == null) {
+            return false;
+        }
+        if (!current.getKey().equals(key)) {
+            return containsKey(key, current.getNext());
+        }
+        return true;
+    }
+
+    /**
      * Removes the entry with a matching key from the map.
      *
      * @param key The key to remove.
