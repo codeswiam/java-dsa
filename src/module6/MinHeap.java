@@ -160,6 +160,54 @@ public class MinHeap<T extends Comparable<? super T>> {
         return dataRemoved;
     }
 
+    private int maxIndex(int i, int j) {
+        return backingArray[i].compareTo(backingArray[j]) > 0 ? i : j;
+    }
+
+    /**
+     * remove() method but for a MaxHeap instead
+     *
+     * Removes and returns the max item of the heap. As usual for array-backed
+     * structures, be sure to null out spots as you remove. Do not decrease the
+     * capacity of the backing array.
+     *
+     * Method should run in O(log n) time.
+     *
+     * You may assume that the heap is not empty.
+     *
+     * @return The data that was removed.
+     */
+    public T removeMax() {
+        // replace the top element with the last element
+        T dataRemoved = backingArray[1];
+        backingArray[1] = backingArray[size];
+        backingArray[size] = null;
+        size--;
+
+        int currIndex = 1;
+        do {
+            int numChildren = numOfChildren(currIndex);
+            int maxIndex;
+
+            if (numChildren == 0) {
+                break;
+            } else if (numChildren == 1) {
+                maxIndex = maxIndex(currIndex, currIndex * 2);
+            } else {
+                maxIndex = maxIndex(currIndex, maxIndex(currIndex * 2, currIndex * 2 + 1));
+            }
+
+            if (maxIndex != currIndex) {
+                swap(maxIndex, currIndex);
+                currIndex = maxIndex;
+            } else {
+                break;
+            }
+        } while (currIndex <= size / 2);
+
+        return dataRemoved;
+    }
+
 
 
     private void downheap(int currIndex) {
